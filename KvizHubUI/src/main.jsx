@@ -1,10 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import { isAuthenticated, logout } from "./services/authService.js";
 
-createRoot(document.getElementById('root')).render(
+if (!isAuthenticated()) {
+  logout();
+  console.log(
+    "🔄 Token je istekao ili ne postoji - korisnik je automatski odjavljen"
+  );
+}
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
-  </StrictMode>,
-)
+  </StrictMode>
+);
