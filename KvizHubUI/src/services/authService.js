@@ -30,7 +30,6 @@ export function decodeToken() {
     return decoded;
   } catch (err) {
     console.error("Invalid token:", err.message);
-
     localStorage.removeItem(TOKEN_KEY);
     return null;
   }
@@ -84,7 +83,10 @@ export function getCurrentUser() {
       ] || decoded.email,
     role:
       decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
-      decoded.role,
+      decoded.role ||
+      decoded.Role ||
+      decoded.roles ||
+      decoded.Roles,
     isActive: decoded.IsActive,
   };
 }
@@ -97,13 +99,20 @@ export function getUserRole() {
   }
 
   const decoded = decodeToken();
+
   return (
     decoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
+    decoded?.role ||
+    decoded?.Role ||
+    decoded?.roles ||
+    decoded?.Roles ||
     null
   );
 }
+
 export function isAuthenticated() {
   const USE_MOCK_AUTH = false;
+
   if (USE_MOCK_AUTH) {
     return true;
   }
